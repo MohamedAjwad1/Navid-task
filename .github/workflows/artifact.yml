@@ -1,0 +1,20 @@
+name: Upload Artifact Folder
+
+on:
+  workflow_dispatch:  # Allow manual triggering from the Actions tab
+
+jobs:
+  upload-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # Step 2: Upload the 'artifact' folder
+      - name: Upload Artifact Folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-folder  # Name of the artifact
+          path: artifact/  # Path to the folder in your repository
