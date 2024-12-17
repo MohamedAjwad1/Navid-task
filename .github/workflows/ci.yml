@@ -1,12 +1,7 @@
 name: Cache Node.js dependencies
 
 on:
-  push:
-    branches:
-      - main  # You can trigger the cache on any branch, here it's 'main'
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:  # Manual trigger via GitHub UI
 
 jobs:
   build:
