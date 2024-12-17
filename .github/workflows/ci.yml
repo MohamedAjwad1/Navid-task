@@ -1,4 +1,43 @@
-yaml    
-strategy:
-  matrix:
-    node-version: [14, 16, 18]
+name: Cache Node.js dependencies
+
+on:
+  push:
+    branches:
+      - main  # You can trigger the cache on any branch, here it's 'main'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js (optional, but ensures correct Node.js version is used)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # You can change the Node.js version
+
+      # Step 3: Cache dependencies
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 4: Install dependencies (if cache miss, will install dependencies)
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 5: Run tests (or any other build steps you want)
+      - name: Run Tests
+        run: npm test
