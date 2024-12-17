@@ -16,13 +16,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # You can change the Node.js version
+          node-version: '16'
 
       # Step 3: Clean npm cache
       - name: Clean npm cache
         run: npm cache clean --force
 
-      # Step 4: Cache Node.js modules
+      # Step 4: Install Dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 5: Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v4
         with:
@@ -32,11 +36,3 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-      # Step 5: Install Dependencies
-      - name: Install Dependencies
-        run: npm install
-
-      # Step 6: Run Tests (or any other build steps you want)
-      - name: Run Tests
-        run: npm test
