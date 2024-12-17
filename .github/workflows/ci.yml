@@ -12,13 +12,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js (optional, but ensures correct Node.js version is used)
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'  # You can change the Node.js version
 
-      # Step 3: Cache dependencies
+      # Step 3: Clean npm cache
+      - name: Clean npm cache
+        run: npm cache clean --force
+
+      # Step 4: Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v4
         with:
@@ -29,10 +33,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 4: Install dependencies (if cache miss, will install dependencies)
+      # Step 5: Install Dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Step 5: Run tests (or any other build steps you want)
+      # Step 6: Run Tests (or any other build steps you want)
       - name: Run Tests
         run: npm test
